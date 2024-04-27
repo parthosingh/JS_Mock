@@ -1,0 +1,243 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #container > div > img{
+            width: 300px;
+            height: 300px;
+        }
+        #container > div {
+            border: 1px solid black;
+            border-radius: 10px;
+            width: 400px;
+        }
+        #container{
+            display: grid;
+            width: 90%;
+            margin: auto;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Product Listing Page</h1>
+  
+    <select id="category-select">
+        <option value="">Categories</option>
+        <option value="electronics">Electronics</option>
+        <option value="jewelery">Jewelery</option>
+        <option value="men's clothing">Men's Clothing</option>
+        <option value="women's clothing">Women's Clothing</option>
+    </select>
+
+    <div id="search">
+        <input placeholder="Search Products...">
+        <button id="navbar-search">
+            🔍
+        </button>
+    </div>
+
+    <div>
+        <select id="navbar-select">
+            <option >sort By Price </option>
+            <option value="asc">Price: Low to High</option>
+            <option value="desc">Price: High to Low</option>
+        </select>
+    </div>
+    <div id="container">
+
+    </div>
+    
+</body>
+<script>
+let selectPrice = document.querySelector("#navbar-select");
+
+let inputBox = document.querySelector("#search > input")
+
+let searchBtn = document.querySelector("#navbar-search");
+
+let selectCategory = document.getElementById("category-select");
+
+let container = document.querySelector("#container");
+
+    let getData = async(URL)=>{
+  let res = await fetch(URL)
+  let data = await res.json()
+
+   console.log(data)
+   showData(data)
+  }
+
+  let showData = (arr)=>{
+ arr.forEach((ele)=>{
+    let div = document.createElement("div");
+
+    let title = document.createElement("p");
+    title.innerHTML = `<h2> ${ele.title} </h2>`
+
+    let img = document.createElement("img");
+    img.src = ele.image
+
+    let price = document.createElement("p");
+    price.innerHTML = `<p>Price:$${ele.price}</p>`
+    price.style.fontSize = "25px"
+    
+    div.append(img, title, price)
+    container.append(div)
+ })
+  }
+//   function handleClick(){
+//     let value = selectCategory.value;
+//     console.log(value)
+//     //let URL = `https://fakestoreapi.com/products/category/${value}`
+//     getData(`https://fakestoreapi.com/products/category/${value}`)
+   
+//    }
+   let handleClick = () => {
+            let value = selectCategory.value;
+            getData(`https://fakestoreapi.com/products/category/${value}`);
+        }
+
+  
+
+function searchData(){
+let value = inputBox.value
+console.log(value)
+let URL = `https://fakestoreapi.com/products/category/${value}`
+
+ 
+getData(URL)
+}
+
+function sortData(){
+let value = selectPrice.value
+let narr;
+if(value === "desc"){
+    console.log(value)
+
+}
+
+}
+
+selectCategory.addEventListener("change", handleClick)
+  selectPrice.addEventListener("click", sortData)
+  searchBtn.addEventListener("click", searchData)
+    getData("https://fakestoreapi.com/products")
+</script>
+</html>
+ -->
+
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* CSS styles */
+        #container > div > img {
+            width: 300px;
+            height: 300px;
+        }
+        #container > div {
+            border: 1px solid black;
+            border-radius: 10px;
+            width: 400px;
+        }
+        #container {
+            display: grid;
+            width: 90%;
+            margin: auto;
+            grid-template-columns: repeat(3, 1fr);
+            grid-gap: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- HTML content -->
+    <h1>Product Listing Page</h1>
+    <select id="category-select">
+        <option value="">Categories</option>
+        <option value="electronics">Electronics</option>
+        <option value="jewelery">Jewelery</option>
+        <option value="men's clothing">Men's Clothing</option>
+        <option value="women's clothing">Women's Clothing</option>
+    </select>
+
+    <div id="search">
+        <input id="search-input" placeholder="Search Products...">
+        <button id="search-btn">🔍</button>
+    </div>
+
+    <div>
+        <select id="price-sort">
+            <option value="asc">Sort By Price: Low to High</option>
+            <option value="desc">Sort By Price: High to Low</option>
+        </select>
+    </div>
+    
+    <div id="container"></div>
+    
+    
+    <script>
+        
+        let selectPrice = document.getElementById("price-sort");
+        let inputBox = document.getElementById("search-input");
+        let searchBtn = document.getElementById("search-btn");
+        let selectCategory = document.getElementById("category-select");
+        let container = document.getElementById("container");
+
+        let getData = async(URL) => {
+            try {
+                let res = await fetch(URL);
+                let data = await res.json();
+                showData(data);
+            } catch (error) {
+                console.error(error.message);
+            }
+        }
+
+        let showData = (arr) => {
+            container.innerHTML = "";
+            arr.forEach((ele) => {
+                let div = document.createElement("div");
+                let title = document.createElement("p");
+                title.innerHTML = `<h2>${ele.title}</h2>`;
+                let img = document.createElement("img");
+                img.src = ele.image;
+                let price = document.createElement("p");
+                price.innerHTML = `<p>Price: $${ele.price}</p>`;
+                price.style.fontSize = "25px";
+                div.append(img, title, price);
+                container.append(div);
+            });
+        }
+
+        let handleClick = () => {
+            let value = selectCategory.value;
+            getData(`https://fakestoreapi.com/products/category/${value}`);
+        }
+
+        let searchData = () => {
+            let value = inputBox.value;
+            
+            getData(`https://fakestoreapi.com/products?title=${value}`);
+        }
+
+        let sortData = () => {
+            let value = selectPrice.value;
+            console.log(value); // Implement sorting functionality here
+        }
+
+        selectCategory.addEventListener("change", handleClick);
+        searchBtn.addEventListener("click", searchData);
+        selectPrice.addEventListener("change", sortData);
+
+        getData("https://fakestoreapi.com/products");
+    </script>
+</body>
+</html>
